@@ -35,7 +35,7 @@ class vae():
 
 		self.stddev_w2 = tf.get_variable(name = 'stddev_w2', dtype = tf.float32, shape = [500, 10], initializer = tf.contrib.layers.xavier_initializer())
 		self.stddev_b2 = tf.get_variable(name = 'stddev_b2', dtype = tf.float32, shape = [10], initializer = tf.initializers.constant(0.0))
-		self.stddev = tf.nn.relu(tf.matmul(self.stddev1, self.stddev_w2) + self.stddev_b2)
+		self.stddev = tf.exp(tf.matmul(self.stddev1, self.stddev_w2) + self.stddev_b2)
 		#done with the stddev
 
 		self.sampled_latent_variable = self.training * (self.sampled_standard_normal_input * self.stddev + self.mean) + self.sampled_standard_normal_input * (1 - self.training)
