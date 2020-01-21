@@ -63,14 +63,14 @@ class vae():
 		self.final_output = tf.cast(self.output * 255.0, dtype = tf.int64)
 
 		#loss
-		
+
 		#self.cross_entropy = tf.nn.sigmoid_cross_entropy_with_logits(labels = self.inp_normalized, logits = self.decoder_conv2)
 		#self.reconstruction_loss = tf.reduce_mean(self.cross_entropy)
 		self.reconstruction_loss = tf.losses.mean_squared_error(labels = self.inp_normalized, predictions = self.output)
 		self.KL_loss = 0.5 * (tf.reduce_mean(tf.reduce_sum(self.stddev) + tf.reduce_sum(self.mean ** 2) - 10 - tf.log(1e-8 + tf.reduce_prod(self.stddev))))
 		self.total_loss = self.reconstruction_loss + self.KL_loss
 		#trainer
-		self.train = tf.train.AdamOptimizer(0.00001).minimize(self.total_loss)
+		self.train = tf.train.GradientDescentOptimizer(0.01).minimize(self.total_loss)
 		self.sess = tf.Session()
 		self.sess.run(tf.global_variables_initializer())
 
